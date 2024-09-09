@@ -21,8 +21,10 @@ RUN apt-get update \
 
 
 WORKDIR /opt
-RUN git clone https://github.com/EnzymeAD/rust.git \
-  && cd rust/ \
+
+RUN git clone https://github.com/EnzymeAD/rust.git
+RUN git clone https://github.com/EnzymeAD/rustbook.git
+RUN cd rust/ \
   && ./configure \
     --enable-llvm-link-shared \
     --enable-llvm-plugins \
@@ -39,4 +41,6 @@ RUN git clone https://github.com/EnzymeAD/rust.git \
   && . "$HOME/.cargo/env" \
   && ldconfig \
   && rustup toolchain link enzyme build/host/stage1 \
-  && rustup toolchain install nightly
+  && rustup toolchain install nightly \
+  && cd ../rustbook/samples \
+  && cargo +enzyme test reverse
